@@ -1,7 +1,19 @@
 function mergeRanges(meetings) {
-  let overlapRanges = [];
+  meetings.sort((a, b) => {
+    return a.startTime - b.startTime;
+  });
 
+  let overlapRanges = [meetings[0]];
 
+  for (let i = 1; i < meetings.length; i++) {
+    let previousMeeting = overlapRanges[overlapRanges.length-1];
+    let currentMeeting = meetings[i];
+    if (currentMeeting.startTime <= previousMeeting.endTime) {
+      previousMeeting.endTime = Math.max(currentMeeting.endTime, previousMeeting.endTime)
+    } else {
+      overlapRanges.push(currentMeeting);
+    }
+  }
   return overlapRanges;
 }
 
